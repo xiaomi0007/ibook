@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://localhost:3306/ibook?useUnicode=true&characterEncoding=UTF-8&userSSL=false
+    data-username: root
+    data-password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    dbcp2:
+      validation-query: SELECT 1
+      test-while-idle: true
+  session:
+    store-type: redis
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 5
+    password:
+    timeout: 3000
+    jedis:
+      pool:
+        max-idle: 10
+        min-idle: 0
+        max-active: 10
+        max-wait: 1000
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="application/javascript" th:src="@{js/jquery-1.10.2.min.js}"></script>
+    <title>登陆</title>
+</head>
+<body style="text-align:center">
+<div id="login">
+    <h1>登陆</h1>
+    <form method="post" action="/login">
+        <div>
+            用户名：<label>
+            <input type="text" name="username">
+        </label>
+        </div>
+        <br>
+        <div>
+            密码：<label>
+            <input type="password" name="password">
+        </label>
+        </div>
+        <div>
+            <br>
+            <label><input type="checkbox" name="remember-me"/>自动登录</label>
+            <br>
+            <br>
+            <button type="submit">立即登陆</button>
+            &nbsp;
+            <button type="button" onclick="ShowRegister()">我要注册</button>
+        </div>
+    </form>
+</div>
+<div id="register">
+    <br>
+    <h1>注册</h1>
+    <div>
+        <div>
+            用户名：<label>
+            <input type="text" name="username" id="username">
+        </label>
+        </div>
+        <br>
+        <div>
+            密码：<label for="password"></label><input type="password" name="password" id="password">
+        </div>
+        <br>
+        <div>
+            确认密码：<label for="confirm_password"></label><input type="password" id="confirm_password">
+        </div>
+        <div>
+            <br>
+            <button type="button" onclick="register()">注册</button>
+            &nbsp;
+            <button type="button" onclick="returnlogin()">返回登录</button>
+        </div>
+    </div>
+</div>
+<div>
+    <span id="tip" style="color: red"></span>
+</div>
+
+<script>
+    $(function () {
+        $('#register').hide();
+
+    });
+
+    function returnlogin() {
+        $('#register').hide();
+        $('#login').show();
+    }
+
+    function register() {
+        if(!confirmPassword()){
+            return;
+        }
+        const username = $('#username').val();
+        const password = $('#password').val();
+        $.ajax({
+            url:'/register',
+            type:"POST",
+            dataType:"json",
+            data:{"username":username,"password":password},
+            success:function (data) {
+                if(data.message){
+                    $('#tip').html(data.message);
+                }
+            }
+        });
+    }
+
+    function ShowRegister() {
+        $('#login').hide();
+        $('#register').show();
+    }
+
+    function confirmPassword() {
+        const password = $('#password').val();
+        const confirm_password = $('#confirm_password').val();
+        if(password === confirm_password){
+            return true;
+        }else {
+            alert('两次密码输入不一致');
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
